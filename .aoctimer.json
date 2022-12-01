@@ -1,0 +1,16 @@
+{
+  "version": "3.0.4",
+  "year": "2022",
+  "language": "TypeScript",
+  "system": "Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz|x64|Linux|8GB",
+  "benchmark": 4862746421,
+  "days": [
+    {
+      "day": "01",
+      "level": 10,
+      "score": 1024,
+      "time": 0.938,
+      "rel": 0.019
+    }
+  ]
+}
