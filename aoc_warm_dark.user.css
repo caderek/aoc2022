@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AoC warm dark
 @namespace      github.com/caderek
-@version        1.0.2
+@version        1.0.3
 @description    Custom theme for Advent of Code
 @author         u/kap89
 ==/UserStyle== */
@@ -144,7 +144,8 @@
     color: var(--color-text);
   }
 
-  .stats a:hover {
+  .stats a:hover,
+  .calendar a:hover {
     background: var(--color-background-code);
     text-decoration: none;
   }
@@ -160,6 +161,7 @@
     font-family: "Source Code Pro";
   }
 
+  .calendar span,
   .privboard-days > span,
   .privboard-star-unlocked {
     color: var(--color-text-dim);
