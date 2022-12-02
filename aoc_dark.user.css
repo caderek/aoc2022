@@ -1,19 +1,21 @@
 /* ==UserStyle==
 @name           AoC dark
-@namespace      github.com/openstyles/stylus
+@namespace      github.com/caderek
 @version        1.0.0
 @description    Custom theme for Advent of Code
-@author         caderek
+@author         u/kap89
 ==/UserStyle== */
 
 @-moz-document domain("adventofcode.com") {
   @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap&family=Roboto+Mono:wght@500&display=swap&text=0123456789()+-=/*");
 
   :root {
+    --font-size: 110%;
     --color-background: #15151e;
     --color-background-code: #201c2d;
     --color-text: #cccccc;
     --color-text-dim: #cccccc33;
+    --color-text-header: #ffffff;
     --color-text-emphasis: #bcff7d;
     --color-text-link: #00d54b;
     --color-text-link-hover: #71fb6d;
@@ -30,8 +32,12 @@
     padding: 1rem;
     background: var(--color-background);
     color: var(--color-text);
-    font-size: 110%;
+    font-size: var(--font-size);
     word-spacing: -0.2em;
+  }
+
+  h2 {
+    color: var(--color-text-header) !important;
   }
 
   p,
