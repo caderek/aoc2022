@@ -14,12 +14,16 @@ const part2 = (rawInput: string) => {
   return
 }
 
+const testInput = `
+
+`
+
 run({
   part1: {
     tests: [
       {
-        input: ``,
-        expected: "",
+        input: testInput,
+        expected: 1,
       },
     ],
     solution: part1,
@@ -27,12 +31,11 @@ run({
   part2: {
     tests: [
       // {
-      //   input: ``,
-      //   expected: "",
+      //   input: testInput,
+      //   expected: a,
       // },
     ],
     solution: part2,
   },
-  trimTestInputs: true,
-  // onlyTests: true,
+  onlyTests: true,
 })
