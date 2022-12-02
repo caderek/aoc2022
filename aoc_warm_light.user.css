@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AoC warm light
 @namespace      github.com/caderek
-@version        1.0.0
+@version        1.0.1
 @description    Custom theme for Advent of Code
 @author         u/kap89
 ==/UserStyle== */
@@ -149,6 +149,8 @@
     text-decoration: none;
   }
 
+  .calendar,
+  .stats,
   .privboard-row,
   .leaderboard-entry {
     word-spacing: 0;
