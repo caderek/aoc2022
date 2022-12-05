@@ -1,22 +1,9 @@
 import run from "aocrunner"
-
-const rotateRight = <T>(arr: T[][]) => {
-  const width = arr[0].length
-  const height = arr.length
-  const rotated = Array.from({ length: width }, () => new Array(height))
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      rotated[x][height - y - 1] = arr[y][x]
-    }
-  }
-
-  return rotated
-}
+import { rotate } from "../utils/grid.js"
 
 const splitByColumns = (data: string) => {
   const chars = data.split("\n").map((line) => line.split(""))
-  return rotateRight(chars).map((col) => col.join("").trim())
+  return rotate.right(chars).map((col) => col.join("").trim())
 }
 
 const parseInput = (rawInput: string) => {
