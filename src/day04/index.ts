@@ -29,6 +29,8 @@ const testInput = `
   2-6,4-8
 `
 
+debugger
+
 run({
   part1: {
     tests: [
