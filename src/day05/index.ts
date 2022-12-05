@@ -1,6 +1,6 @@
 import run from "aocrunner"
 
-const rotateRight = <T>(arr: T[][], dir: "left" | "right" | "180") => {
+const rotateRight = <T>(arr: T[][]) => {
   const width = arr[0].length
   const height = arr.length
   const rotated = Array.from({ length: width }, () => new Array(height))
@@ -19,7 +19,7 @@ const rotateRight = <T>(arr: T[][], dir: "left" | "right" | "180") => {
 
 const splitByColumns = (data: string) => {
   const chars = data.split("\n").map((line) => line.split(""))
-  const lines = rotateRight(chars, "right")
+  const lines = rotateRight(chars)
     .map((col) => col.join("").trim())
     .filter((line) => /[A-Z]/.test(line))
 
