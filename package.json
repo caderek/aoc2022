@@ -24,6 +24,7 @@
     "node": ">=16.13.0"
   },
   "dependencies": {
-    "@arrows/array": "^1.4.1"
+    "@arrows/array": "^1.4.1",
+    "js-sdsl": "^4.2.0"
   }
 }

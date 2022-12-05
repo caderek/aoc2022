@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AoC light
 @namespace      github.com/caderek
-@version        1.0.3
+@version        1.0.4
 @description    Custom theme for Advent of Code
 @author         u/kap89
 ==/UserStyle== */
@@ -158,7 +158,7 @@
   .privboard-row,
   .leaderboard-entry {
     word-spacing: 0;
-    font-family: "Source Code Pro";
+    font-family: "Source Code Pro", monospace;
   }
 
   .privboard-row,
