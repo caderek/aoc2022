@@ -46,7 +46,7 @@ const part1 = (rawInput: string) => {
 
   return stacks
     .map((stack) => stack.at(-1))
-    .filter((v) => v !== undefined)
+    .filter(Boolean)
     .join("")
 }
 
@@ -70,7 +70,7 @@ const part2 = (rawInput: string) => {
 
   return stacks
     .map((stack) => stack.at(-1))
-    .filter((v) => v !== undefined)
+    .filter(Boolean)
     .join("")
 }
 
