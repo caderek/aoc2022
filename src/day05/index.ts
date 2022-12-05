@@ -7,10 +7,7 @@ const rotateRight = <T>(arr: T[][]) => {
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const newX = height - y - 1
-      const newY = x
-
-      rotated[newY][newX] = arr[y][x]
+      rotated[x][height - y - 1] = arr[y][x]
     }
   }
 
@@ -19,17 +16,15 @@ const rotateRight = <T>(arr: T[][]) => {
 
 const splitByColumns = (data: string) => {
   const chars = data.split("\n").map((line) => line.split(""))
-  const lines = rotateRight(chars)
-    .map((col) => col.join("").trim())
-    .filter((line) => /[A-Z]/.test(line))
-
-  return lines
+  return rotateRight(chars).map((col) => col.join("").trim())
 }
 
 const parseInput = (rawInput: string) => {
   const [stacks, commands] = rawInput.split("\n\n")
   return {
-    stacks: splitByColumns(stacks).map((col) => col.slice(1).split("")),
+    stacks: splitByColumns(stacks)
+      .filter((line) => /[A-Z]/.test(line))
+      .map((col) => col.slice(1).split("")),
     commands: commands
       .split("\n")
       .map((command) => (command.match(/(\d+)/g) ?? []).map(Number)),
@@ -108,6 +103,5 @@ run({
     ],
     solution: part2,
   },
-  // onlyTests: true,
   trimTestInputs: false,
 })
