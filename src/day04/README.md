@@ -6,4 +6,4 @@ Task description: [link](https://adventofcode.com/2022/day/4)
 
 ## Notes
 
-Additional solution in pure CSS+HTML: [CodePen](https://codepen.io/caderek/pen/eYKbjjj?editors=1100)
+Additional solution in pure CSS+HTML: [CodePen](https://codepen.io/caderek/pen/MWXLeVO?editors=1100)
