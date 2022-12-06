@@ -6,7 +6,7 @@ const solve = (frameSize: number) => (rawInput: string) => {
   const input = parseInput(rawInput)
   let i = 0
 
-  while (i < input.length - frameSize) {
+  while (true) {
     if (new Set(input.subarray(i, i + frameSize)).size === frameSize) {
       return i + frameSize
     }
