@@ -1,0 +1,62 @@
+
+    +--- AoC 2022 - AOC TIMER ---------------------------+
+    |                                                    |
+    | Linux (x64) 8GB RAM                                |
+    | Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz          |
+    |                                                    |
+    | Language: TypeScript                               |
+    |                                                    |
+    |--- DAYS -------------------------------------------|
+    |                                                    |
+    | Day 01                                             |
+    | ------                                             |
+    | Time: 0.962ms                   Points: 1024       |
+    | Benchmark: 0.02%                Level: **********  |
+    |                                                    |
+    | Day 02                                             |
+    | ------                                             |
+    | Time: 4.229ms                   Points: 1024       |
+    | Benchmark: 0.087%               Level: **********  |
+    |                                                    |
+    | Day 03                                             |
+    | ------                                             |
+    | Time: 2.461ms                   Points: 1024       |
+    | Benchmark: 0.051%               Level: **********  |
+    |                                                    |
+    | Day 04                                             |
+    | ------                                             |
+    | Time: 6.147ms                   Points: 512        |
+    | Benchmark: 0.126%               Level: *********-  |
+    |                                                    |
+    | Day 05                                             |
+    | ------                                             |
+    | Time: 2.702ms                   Points: 1024       |
+    | Benchmark: 0.056%               Level: **********  |
+    |                                                    |
+    | Day 06                                             |
+    | ------                                             |
+    | Time: 7.006ms                   Points: 512        |
+    | Benchmark: 0.144%               Level: *********-  |
+    |                                                    |
+    | Day 07                                             |
+    | ------                                             |
+    | Time: 5.776ms                   Points: 512        |
+    | Benchmark: 0.119%               Level: *********-  |
+    |                                                    |
+    | Day 08                                             |
+    | ------                                             |
+    | Time: 17.142ms                  Points: 256        |
+    | Benchmark: 0.353%               Level: ********--  |
+    |                                                    |
+    |--- SUMMARY ----------------------------------------|
+    |                                                    |
+    | Completed: 8 / 25                                  |
+    |                                                    |
+    | Total time: 46.425ms                               |
+    | Benchmark (average): 0.119%                        |
+    |                                                    |
+    | Total score: 5888                                  |
+    | Level (average): *********-                        |
+    |                                                    |
+    +----------------------------------- git.io/JL9Qu ---+
+
