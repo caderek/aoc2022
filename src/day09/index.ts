@@ -1,6 +1,6 @@
 import run from "aocrunner"
 
-type Point = { x: number; y: number }
+type Knot = { x: number; y: number }
 type Dir = "R" | "L" | "U" | "D"
 
 const dirs = {
@@ -27,17 +27,16 @@ const parseInput = (rawInput: string) =>
     return [dir, Number(amount)] as [Dir, number]
   })
 
-const areTouching = (head: Point, tail: Point) => {
+const areTouching = (a: Knot, b: Knot) => {
   return (
-    (head.x === tail.x && head.y === tail.y) ||
+    (a.x === b.x && a.y === b.y) ||
     neighbors.some(
-      (neighbor) =>
-        tail.y + neighbor[0] === head.y && tail.x + neighbor[1] === head.x,
+      (neighbor) => b.y + neighbor[0] === a.y && b.x + neighbor[1] === a.x,
     )
   )
 }
 
-const moveTail = (head: Point, tail: Point) => {
+const moveKnot = (head: Knot, tail: Knot) => {
   const dx = head.x - tail.x
   const dy = head.y - tail.y
   const y = tail.y + dy / (Math.abs(dy) || 1)
@@ -60,10 +59,10 @@ const solve = (length: number) => (rawInput: string) => {
         }
 
         if (!areTouching(rope[i], rope[i + 1])) {
-          rope[i + 1] = moveTail(rope[i], rope[i + 1])
+          rope[i + 1] = moveKnot(rope[i], rope[i + 1])
         }
       }
-      const tail = rope.at(-1) as Point
+      const tail = rope.at(-1) as Knot
       visited.add(`${tail.y}:${tail.x}`)
     }
   }
