@@ -35,7 +35,7 @@ const part1 = (rawInput: string) => {
     }
 
     max = -1
-    for (let y = input[0].length - 1; y >= 0; y--) {
+    for (let y = input.length - 1; y >= 0; y--) {
       if (input[y][x] > max) {
         visible.add(`${y}:${x}`)
         max = input[y][x]
