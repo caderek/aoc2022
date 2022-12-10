@@ -15,13 +15,13 @@ const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
   let register = 1
   let cycle = 0
-  let signalStrength = 0
+  let signalStrengthSum = 0
 
   const nexCycle = () => {
     cycle++
 
     if (cycle >= 20 && (cycle - 20) % 40 === 0) {
-      signalStrength += cycle * register
+      signalStrengthSum += cycle * register
     }
   }
 
@@ -35,7 +35,7 @@ const part1 = (rawInput: string) => {
     }
   }
 
-  return signalStrength
+  return signalStrengthSum
 }
 
 const part2 = (rawInput: string) => {
