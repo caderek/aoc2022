@@ -47,11 +47,13 @@ const part2 = (rawInput: string) => {
   const nexCycle = () => {
     cycle++
 
-    const pixelPosInline = (cycle - 1) % 40
-    const isPixelInsideSprite =
-      pixelPosInline >= register - 1 && pixelPosInline <= register + 1
+    const pixelPosInLine = (cycle - 1) % 40
 
-    screen.push(isPixelInsideSprite ? "█" : " ")
+    screen.push(
+      pixelPosInLine >= register - 1 && pixelPosInLine <= register + 1
+        ? "█"
+        : " ",
+    )
   }
 
   for (const item of input) {
