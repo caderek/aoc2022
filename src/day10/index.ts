@@ -51,8 +51,8 @@ const part2 = (rawInput: string) => {
 
     screen.push(
       pixelPosInLine >= register - 1 && pixelPosInLine <= register + 1
-        ? "█"
-        : " ",
+        ? "#"
+        : ".",
     )
   }
 
