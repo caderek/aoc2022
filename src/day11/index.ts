@@ -16,7 +16,7 @@ const parseInput = (rawInput: string) =>
   })
 
 const solve =
-  (rounds: number, divider: number = 1) =>
+  (rounds: number, divisor: number = 1) =>
   (rawInput: string) => {
     const monkeys = parseInput(rawInput)
 
@@ -30,7 +30,7 @@ const solve =
           monkey.inspected++
           const item = monkey.items.shift()
           const worryLevel = monkey.operation(item as number)
-          const worryLevelAfter = Math.floor(worryLevel / divider) % mul
+          const worryLevelAfter = Math.floor(worryLevel / divisor) % mul
 
           const targetIndex =
             worryLevelAfter % monkey.divisor === 0
