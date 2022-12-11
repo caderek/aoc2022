@@ -145,17 +145,19 @@
         showSlots: false,
         sizes: {
           gap: 2,
+          tile: 8,
+          line: 1,
         },
       })
 
       gridCanvas.drawGrid(grid2, (item) => ({
         fill: "#2eb349",
-        // stroke: "#0077aa",
-        stroke:
-          "#" +
-          Math.floor(Math.random() * 0xfff)
-            .toString(16)
-            .padStart(3, "0"),
+        stroke: "#0077aa",
+        // stroke:
+        //   "#" +
+        //   Math.floor(Math.random() * 0xfff)
+        //     .toString(16)
+        //     .padStart(3, "0"),
         shape: "circle",
         scale: item / 9,
       }))

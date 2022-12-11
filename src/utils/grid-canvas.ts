@@ -9,6 +9,7 @@ type Config = {
   sizes: {
     tile: number
     gap: number
+    line: number
   }
   shapes: {
     tile: Shape
@@ -42,6 +43,7 @@ const defaultConfig: Config = {
   sizes: {
     tile: 8,
     gap: 2,
+    line: 1,
   },
   shapes: {
     tile: "square",
@@ -118,7 +120,7 @@ class GridCanvas {
 
     if (stroke) {
       this.#ctx.strokeStyle = stroke
-      this.#ctx.lineWidth = 1
+      this.#ctx.lineWidth = this.#config.sizes.line
       this.#ctx.strokeRect(
         x * (tile + gap) + offset,
         y * (tile + gap) + offset,
@@ -150,7 +152,7 @@ class GridCanvas {
 
     if (stroke) {
       this.#ctx.strokeStyle = stroke
-      this.#ctx.lineWidth = 1
+      this.#ctx.lineWidth = this.#config.sizes.line
       this.#ctx.stroke()
     }
   }
