@@ -8,7 +8,7 @@ const parseInput = (rawInput: string) =>
       items: (items.match(/(\d+)/g) ?? []).map(Number),
       operation: (old: Number) =>
         eval(op.slice(19).replace(/old/g, String(old))),
-      test: Number((test.match(/(\d+)/g) ?? [])[0]),
+      divisor: Number((test.match(/(\d+)/g) ?? [])[0]),
       ifTrue: Number((ifTrue.match(/(\d+)/g) ?? [])[0]),
       ifFalse: Number((ifFalse.match(/(\d+)/g) ?? [])[0]),
       inspected: 0,
@@ -20,7 +20,7 @@ const solve =
   (rawInput: string) => {
     const input = parseInput(rawInput)
 
-    const mul = input.reduce((acc, item) => acc * item.test, 1)
+    const mul = input.reduce((acc, item) => acc * item.divisor, 1)
 
     let round = rounds
 
@@ -33,7 +33,9 @@ const solve =
           const worryLevelAfter = Math.floor(worryLevel / divider) % mul
 
           const targetIndex =
-            worryLevelAfter % monkey.test === 0 ? monkey.ifTrue : monkey.ifFalse
+            worryLevelAfter % monkey.divisor === 0
+              ? monkey.ifTrue
+              : monkey.ifFalse
 
           input[targetIndex].items.push(worryLevelAfter)
         }
