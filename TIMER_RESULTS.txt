@@ -48,14 +48,29 @@
     | Time: 17.142ms                  Points: 256        |
     | Benchmark: 0.353%               Level: ********--  |
     |                                                    |
+    | Day 09                                             |
+    | ------                                             |
+    | Time: 40.987ms                  Points: 128        |
+    | Benchmark: 0.843%               Level: *******---  |
+    |                                                    |
+    | Day 10                                             |
+    | ------                                             |
+    | Time: 0.34ms                    Points: 1024       |
+    | Benchmark: 0.007%               Level: **********  |
+    |                                                    |
+    | Day 11                                             |
+    | ------                                             |
+    | Time: 971.081ms                 Points: 8          |
+    | Benchmark: 19.97%               Level: ***-------  |
+    |                                                    |
     |--- SUMMARY ----------------------------------------|
     |                                                    |
-    | Completed: 8 / 25                                  |
+    | Completed: 11 / 25                                 |
     |                                                    |
-    | Total time: 46.425ms                               |
-    | Benchmark (average): 0.119%                        |
+    | Total time: 1058.833ms                             |
+    | Benchmark (average): 1.980%                        |
     |                                                    |
-    | Total score: 5888                                  |
+    | Total score: 7048                                  |
     | Level (average): *********-                        |
     |                                                    |
     +----------------------------------- git.io/JL9Qu ---+
