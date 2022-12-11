@@ -18,14 +18,14 @@ const parseInput = (rawInput: string) =>
 const solve =
   (rounds: number, divider: number = 1) =>
   (rawInput: string) => {
-    const input = parseInput(rawInput)
+    const monkeys = parseInput(rawInput)
 
-    const mul = input.reduce((acc, item) => acc * item.divisor, 1)
+    const mul = monkeys.reduce((acc, item) => acc * item.divisor, 1)
 
     let round = rounds
 
     while (round--) {
-      for (const monkey of input) {
+      for (const monkey of monkeys) {
         while (monkey.items.length > 0) {
           monkey.inspected++
           const item = monkey.items.shift()
@@ -37,12 +37,12 @@ const solve =
               ? monkey.ifTrue
               : monkey.ifFalse
 
-          input[targetIndex].items.push(worryLevelAfter)
+          monkeys[targetIndex].items.push(worryLevelAfter)
         }
       }
     }
 
-    return input
+    return monkeys
       .map((monkey) => monkey.inspected)
       .sort((a, b) => a - b)
       .slice(-2)
