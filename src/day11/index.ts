@@ -49,12 +49,6 @@ const solve =
       .reduce((a, b) => a * b)
   }
 
-const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput)
-
-  return
-}
-
 const testInput = `
 Monkey 0:
   Starting items: 79, 98
