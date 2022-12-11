@@ -25,7 +25,6 @@ const solve =
     let round = rounds
 
     while (round--) {
-      let m = 0
       for (const monkey of input) {
         while (monkey.items.length > 0) {
           monkey.inspected++
@@ -38,7 +37,6 @@ const solve =
 
           input[targetIndex].items.push(worryLevelAfter)
         }
-        m++
       }
     }
 
