@@ -1,34 +1,22 @@
 type Shape = "square" | "circle"
 type Color = string | null
-type ImagePath = string
 
 type Config = {
-  fill: {
-    slot: Color
-    tile: Color
-  }
-  sizes: {
-    tile: number
-    gap: number
-    line: number
-  }
-  shapes: {
-    tile: Shape
-    slot: Shape
-  }
-  stroke: {
-    tile: Color
-    slot: Color
-  }
+  tileColor: Color
+  tileShape: Shape
+  tileSize: number
+  lineColor: Color
+  lineSize: number
+  gapSize: number
   background: Color
-  showSlots: boolean
 }
 
 type TileStyle = {
-  fill?: Color
-  stroke?: Color
+  tileColor?: Color
+  tileShape?: Shape
+  lineColor?: Color
+  lineSize?: number
   scale?: number
-  shape?: Shape
 }
 
 type GridCell = string | number | boolean
@@ -37,25 +25,13 @@ type Point = { x: number; y: number }
 type Format<T> = (item: T) => TileStyle
 
 const defaultConfig: Config = {
-  fill: {
-    slot: "#140a1c",
-    tile: "#eee",
-  },
-  sizes: {
-    tile: 8,
-    gap: 2,
-    line: 1,
-  },
-  shapes: {
-    tile: "square",
-    slot: "square",
-  },
-  stroke: {
-    tile: null,
-    slot: null,
-  },
+  tileColor: "#eee",
+  tileShape: "square",
+  tileSize: 8,
+  lineColor: null,
+  lineSize: 0,
+  gapSize: 2,
   background: "#0e0614",
-  showSlots: true,
 }
 
 class GridCanvas {
@@ -86,31 +62,27 @@ class GridCanvas {
   }
 
   #updateConfig(config: Partial<Config> = {}) {
-    if (config.showSlots) {
-      this.#config.showSlots = config.showSlots
-    }
-    if (config.fill) {
-      this.#config.fill = { ...this.#config.fill, ...config.fill }
-    }
-    if (config.shapes) {
-      this.#config.shapes = { ...this.#config.shapes, ...config.shapes }
-    }
-    if (config.sizes) {
-      this.#config.sizes = { ...this.#config.sizes, ...config.sizes }
-    }
+    this.#config = { ...this.#config, ...config }
   }
 
   #registerResizeHandler() {
     window.addEventListener("resize", this.#resize)
   }
 
-  #square(x: number, y: number, fill: Color, stroke: Color, scale: number = 1) {
-    const tile = this.#config.sizes.tile
-    const gap = this.#config.sizes.gap
+  #square(
+    x: number,
+    y: number,
+    tileColor: Color,
+    lineColor: Color,
+    lineSize: number,
+    scale: number = 1,
+  ) {
+    const tile = this.#config.tileSize
+    const gap = this.#config.gapSize
     const offset = (tile * (1 - scale)) / 2
 
-    if (fill) {
-      this.#ctx.fillStyle = fill
+    if (tileColor) {
+      this.#ctx.fillStyle = tileColor
       this.#ctx.fillRect(
         x * (tile + gap) + offset,
         y * (tile + gap) + offset,
@@ -119,9 +91,9 @@ class GridCanvas {
       )
     }
 
-    if (stroke) {
-      this.#ctx.strokeStyle = stroke
-      this.#ctx.lineWidth = this.#config.sizes.line
+    if (lineSize > 0 && lineColor) {
+      this.#ctx.strokeStyle = lineColor
+      this.#ctx.lineWidth = lineSize
       this.#ctx.strokeRect(
         x * (tile + gap) + offset,
         y * (tile + gap) + offset,
@@ -131,11 +103,18 @@ class GridCanvas {
     }
   }
 
-  #circle(x: number, y: number, fill: Color, stroke: Color, scale: number = 1) {
-    const tile = this.#config.sizes.tile
-    const gap = this.#config.sizes.gap
-    const size = this.#config.sizes.tile * scale
-    const offset = (this.#config.sizes.tile * (1 - scale)) / 2 + size / 2
+  #circle(
+    x: number,
+    y: number,
+    tileColor: Color,
+    lineColor: Color,
+    lineSize: number,
+    scale: number = 1,
+  ) {
+    const tile = this.#config.tileSize
+    const gap = this.#config.gapSize
+    const size = this.#config.tileSize * scale
+    const offset = (this.#config.tileSize * (1 - scale)) / 2 + size / 2
 
     this.#ctx.beginPath()
     this.#ctx.arc(
@@ -146,42 +125,15 @@ class GridCanvas {
       Math.PI * 2,
     )
 
-    if (fill) {
-      this.#ctx.fillStyle = fill
+    if (tileColor) {
+      this.#ctx.fillStyle = tileColor
       this.#ctx.fill()
     }
 
-    if (stroke) {
-      this.#ctx.strokeStyle = stroke
-      this.#ctx.lineWidth = this.#config.sizes.line
+    if (lineSize > 0 && lineColor) {
+      this.#ctx.strokeStyle = lineColor
+      this.#ctx.lineWidth = lineSize
       this.#ctx.stroke()
-    }
-  }
-
-  #sprite(x: number, y: number, fill: Color, stroke: Color, scale: number = 1) {
-    const tile = this.#config.sizes.tile
-    const gap = this.#config.sizes.gap
-    const offset = (tile * (1 - scale)) / 2
-
-    if (fill) {
-      this.#ctx.fillStyle = fill
-      this.#ctx.fillRect(
-        x * (tile + gap) + offset,
-        y * (tile + gap) + offset,
-        tile * scale,
-        tile * scale,
-      )
-    }
-
-    if (stroke) {
-      this.#ctx.strokeStyle = stroke
-      this.#ctx.lineWidth = this.#config.sizes.line
-      this.#ctx.strokeRect(
-        x * (tile + gap) + offset,
-        y * (tile + gap) + offset,
-        tile * scale,
-        tile * scale,
-      )
     }
   }
 
@@ -193,42 +145,35 @@ class GridCanvas {
     return this.#square.bind(this)
   }
 
-  drawGrid<T extends GridCell>(data: T[][], format?: Format<T>) {
-    const height = data.length
-    const width = data[0].length
+  drawGrid<T extends GridCell>(grid: T[][], format?: Format<T>) {
+    const height = grid.length
+    const width = grid[0].length
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        let gridCell = data[y][x]
+        let gridCell = grid[y][x]
 
         if (typeof gridCell === "string") {
           // @ts-ignore
           gridCell = gridCell.trim()
         }
 
-        if (this.#config.showSlots) {
-          this.#getShapeFn(this.#config.shapes.slot)(
-            x,
-            y,
-            this.#config.fill.slot,
-            this.#config.stroke.slot,
-          )
-        }
-
         const style: Required<TileStyle> = {
-          fill: this.#config.fill.tile,
-          stroke: this.#config.stroke.tile,
+          tileColor: this.#config.tileColor,
+          tileShape: this.#config.tileShape,
+          lineColor: this.#config.lineColor,
+          lineSize: this.#config.lineSize,
           scale: 1,
-          shape: this.#config.shapes.tile,
           ...(format ? format(gridCell) : {}),
         }
 
         if (gridCell) {
-          this.#getShapeFn(style.shape)(
+          this.#getShapeFn(style.tileShape)(
             x,
             y,
-            style.fill,
-            style.stroke,
+            style.tileColor,
+            style.lineColor,
+            style.lineSize,
             style.scale,
           )
         }
@@ -236,7 +181,27 @@ class GridCanvas {
     }
   }
 
-  drawPoints<T extends Point>(data: T, format?: Format<T>) {}
+  drawPoints<T extends Point>(points: T[], format?: Format<T>) {
+    for (const point of points) {
+      const style: Required<TileStyle> = {
+        tileColor: this.#config.tileColor,
+        tileShape: this.#config.tileShape,
+        lineColor: this.#config.lineColor,
+        lineSize: this.#config.lineSize,
+        scale: 1,
+        ...(format ? format(point) : {}),
+      }
+
+      this.#getShapeFn(style.tileShape)(
+        point.x,
+        point.y,
+        style.tileColor,
+        style.lineColor,
+        style.lineSize,
+        style.scale,
+      )
+    }
+  }
 
   clear() {
     this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height)

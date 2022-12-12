@@ -102,3 +102,5 @@ run({
     solution: part2,
   },
 })
+
+export { part1 }
