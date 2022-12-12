@@ -1,6 +1,7 @@
-import run from "aocrunner"
-import createGraph from "ngraph.graph"
-import path from "ngraph.path"
+// @ts-ignore
+import createGraph from "https://cdn.skypack.dev/ngraph.graph"
+// @ts-ignore
+import path from "https://cdn.skypack.dev/ngraph.path"
 
 const parseInput = (rawInput: string) =>
   rawInput.split("\n").map((line) => line.split(""))
@@ -18,7 +19,7 @@ const getElevation = (item: string) => {
   return item === "S" ? 1 : item === "E" ? 26 : item.charCodeAt(0) - 96
 }
 
-const buildGraph = (input: string[][], reversed: boolean = false) => {
+const buildGraph = (input: string[][]) => {
   const g = createGraph()
   let start = ""
   let end = ""
@@ -62,57 +63,32 @@ const part1 = (rawInput: string) => {
   const { g, start, end } = buildGraph(input)
   const pathFinder = path.nba(g, { oriented: true })
 
-  return pathFinder.find(start, end).length - 1
+  return pathFinder
+    .find(start, end)
+    .map((v: any) => v.data)
+    .reverse()
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  const { g, end } = buildGraph(input, true)
+  const { g, end } = buildGraph(input)
   const pathFinder = path.nba(g, { oriented: true })
 
   let length = Infinity
+  let shortestPath: any[] = []
 
-  g.forEachNode((node) => {
+  g.forEachNode((node: any) => {
     if (node.data.val === 1) {
       const p = pathFinder.find(node.id, end)
 
       if (p.length && p.length - 1 < length) {
         length = p.length - 1
+        shortestPath = p
       }
     }
   })
 
-  return length
+  return shortestPath.map((v: any) => v.data)
 }
 
-const testInput = `
-  Sabqponm
-  abcryxxl
-  accszExk
-  acctuvwj
-  abdefghi
-`
-
-run({
-  part1: {
-    tests: [
-      {
-        input: testInput,
-        expected: 31,
-      },
-    ],
-    solution: part1,
-  },
-  part2: {
-    tests: [
-      {
-        input: testInput,
-        expected: 29,
-      },
-    ],
-    solution: part2,
-  },
-  // onlyTests: true,
-})
-
-export { part1 }
+export { part1, part2 }

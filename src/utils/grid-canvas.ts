@@ -22,7 +22,8 @@ type TileStyle = {
 type GridCell = string | number | boolean
 type Point = { x: number; y: number }
 
-type Format<T> = (item: T) => TileStyle
+type FormatCell<T> = (item: T, x: number, y: number) => TileStyle
+type FormatPoint<T> = (item: T, index: number) => TileStyle
 
 const defaultConfig: Config = {
   tileColor: "#eee",
@@ -40,8 +41,9 @@ class GridCanvas {
   #config: Config = defaultConfig
 
   #resize = () => {
-    this.#canvas.width = this.#canvas.clientWidth
-    this.#canvas.height = this.#canvas.clientHeight
+    const pixelRatio = window.devicePixelRatio
+    this.#canvas.width = Math.floor(this.#canvas.clientWidth * pixelRatio)
+    this.#canvas.height = Math.floor(this.#canvas.clientHeight * pixelRatio)
   }
 
   constructor(selector: string, config: Partial<Config> = {}) {
@@ -145,7 +147,31 @@ class GridCanvas {
     return this.#square.bind(this)
   }
 
-  drawGrid<T extends GridCell>(grid: T[][], format?: Format<T>) {
+  fillArea(height: number, width: number, format?: FormatCell<boolean>) {
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const style: Required<TileStyle> = {
+          tileColor: this.#config.tileColor,
+          tileShape: this.#config.tileShape,
+          lineColor: this.#config.lineColor,
+          lineSize: this.#config.lineSize,
+          scale: 1,
+          ...(format ? format(true, x, y) : {}),
+        }
+
+        this.#getShapeFn(style.tileShape)(
+          x,
+          y,
+          style.tileColor,
+          style.lineColor,
+          style.lineSize,
+          style.scale,
+        )
+      }
+    }
+  }
+
+  drawGrid<T extends GridCell>(grid: T[][], format?: FormatCell<T>) {
     const height = grid.length
     const width = grid[0].length
 
@@ -164,7 +190,7 @@ class GridCanvas {
           lineColor: this.#config.lineColor,
           lineSize: this.#config.lineSize,
           scale: 1,
-          ...(format ? format(gridCell) : {}),
+          ...(format ? format(gridCell, x, y) : {}),
         }
 
         if (gridCell) {
@@ -181,15 +207,16 @@ class GridCanvas {
     }
   }
 
-  drawPoints<T extends Point>(points: T[], format?: Format<T>) {
-    for (const point of points) {
+  drawPoints<T extends Point>(points: T[], format?: FormatPoint<T>) {
+    for (let i = 0; i < points.length; i++) {
+      const point = points[i]
       const style: Required<TileStyle> = {
         tileColor: this.#config.tileColor,
         tileShape: this.#config.tileShape,
         lineColor: this.#config.lineColor,
         lineSize: this.#config.lineSize,
         scale: 1,
-        ...(format ? format(point) : {}),
+        ...(format ? format(point, i) : {}),
       }
 
       this.#getShapeFn(style.tileShape)(

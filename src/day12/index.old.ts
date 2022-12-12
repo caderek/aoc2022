@@ -1,6 +1,5 @@
 import run from "aocrunner"
-import createGraph from "ngraph.graph"
-import path from "ngraph.path"
+import graph, { Graph } from "graphlib"
 
 const parseInput = (rawInput: string) =>
   rawInput.split("\n").map((line) => line.split(""))
@@ -19,7 +18,7 @@ const getElevation = (item: string) => {
 }
 
 const buildGraph = (input: string[][], reversed: boolean = false) => {
-  const g = createGraph()
+  const g = new Graph({ directed: true })
   let start = ""
   let end = ""
 
@@ -37,18 +36,18 @@ const buildGraph = (input: string[][], reversed: boolean = false) => {
         end = nodeName
       }
 
-      g.addNode(nodeName, { x, y, val: currentElevation })
+      g.setNode(nodeName, input[y][x])
 
       for (const neighbor of neighbors) {
         const neighborElevation = getElevation(neighbor.val)
         if (neighborElevation <= currentElevation + 1) {
-          g.addNode(`${neighbor.y}:${neighbor.x}`, {
-            x: neighbor.x,
-            y: neighbor.y,
-            val: neighborElevation,
-          })
+          g.setNode(`${neighbor.y}:${neighbor.x}`, neighbor.val)
 
-          g.addLink(nodeName, `${neighbor.y}:${neighbor.x}`)
+          if (reversed) {
+            g.setEdge(`${neighbor.y}:${neighbor.x}`, nodeName)
+          } else {
+            g.setEdge(nodeName, `${neighbor.y}:${neighbor.x}`)
+          }
         }
       }
     }
@@ -60,29 +59,19 @@ const buildGraph = (input: string[][], reversed: boolean = false) => {
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const { g, start, end } = buildGraph(input)
-  const pathFinder = path.nba(g, { oriented: true })
 
-  return pathFinder.find(start, end).length - 1
+  return graph.alg.dijkstra(g, start)[end].distance
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const { g, end } = buildGraph(input, true)
-  const pathFinder = path.nba(g, { oriented: true })
 
-  let length = Infinity
-
-  g.forEachNode((node) => {
-    if (node.data.val === 1) {
-      const p = pathFinder.find(node.id, end)
-
-      if (p.length && p.length - 1 < length) {
-        length = p.length - 1
-      }
-    }
-  })
-
-  return length
+  return Math.min(
+    ...Object.entries(graph.alg.dijkstra(g, end))
+      .filter(([key]) => g.node(key) === "a")
+      .map(([_, data]) => data.distance),
+  )
 }
 
 const testInput = `
@@ -112,7 +101,6 @@ run({
     ],
     solution: part2,
   },
-  // onlyTests: true,
 })
 
 export { part1 }

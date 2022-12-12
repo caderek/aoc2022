@@ -27,6 +27,8 @@
   "dependencies": {
     "@arrows/array": "^1.4.1",
     "graphlib": "^2.1.8",
-    "js-sdsl": "^4.2.0"
+    "js-sdsl": "^4.2.0",
+    "ngraph.graph": "^20.0.1",
+    "ngraph.path": "^1.4.0"
   }
 }
