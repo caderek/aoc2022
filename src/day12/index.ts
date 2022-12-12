@@ -17,7 +17,7 @@ const getElevation = (item: string) => {
   return item === "S" ? 1 : item === "E" ? 26 : item.charCodeAt(0) - 96
 }
 
-const buildGraph = (input: string[][]) => {
+const buildGraph = (input: string[][], reversed: boolean = false) => {
   const g = new Graph({ directed: true })
   let start = ""
   let end = ""
@@ -36,10 +36,18 @@ const buildGraph = (input: string[][]) => {
         end = nodeName
       }
 
+      g.setNode(nodeName, input[y][x])
+
       for (const neighbor of neighbors) {
         const neighborElevation = getElevation(neighbor.val)
         if (neighborElevation <= currentElevation + 1) {
-          g.setEdge(nodeName, `${neighbor.y}:${neighbor.x}`)
+          g.setNode(`${neighbor.y}:${neighbor.x}`, neighbor.val)
+
+          if (reversed) {
+            g.setEdge(`${neighbor.y}:${neighbor.x}`, nodeName)
+          } else {
+            g.setEdge(nodeName, `${neighbor.y}:${neighbor.x}`)
+          }
         }
       }
     }
@@ -57,19 +65,13 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  const { g, end } = buildGraph(input)
+  const { g, end } = buildGraph(input, true)
 
-  const distances: number[] = []
-
-  for (let y = 0; y < input.length; y++) {
-    for (let x = 0; x < input[0].length; x++) {
-      if (input[y][x] === "a") {
-        distances.push(graph.alg.dijkstra(g, `${y}:${x}`)[end].distance)
-      }
-    }
-  }
-
-  return Math.min(...distances)
+  return Math.min(
+    ...Object.entries(graph.alg.dijkstra(g, end))
+      .filter(([key]) => g.node(key) === "a")
+      .map(([_, data]) => data.distance),
+  )
 }
 
 const testInput = `
