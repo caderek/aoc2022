@@ -15,6 +15,7 @@
   "author": "Maciej Caderek",
   "license": "ISC",
   "devDependencies": {
+    "@types/graphlib": "^2.1.8",
     "@types/node": "^16.11.6",
     "aocrunner": "^1.9.6",
     "aoctimer": "^3.0.4",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "@arrows/array": "^1.4.1",
+    "graphlib": "^2.1.8",
     "js-sdsl": "^4.2.0"
   }
 }

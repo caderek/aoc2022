@@ -1,5 +1,6 @@
 type Shape = "square" | "circle"
 type Color = string | null
+type ImagePath = string
 
 type Config = {
   fill: {
@@ -157,6 +158,33 @@ class GridCanvas {
     }
   }
 
+  #sprite(x: number, y: number, fill: Color, stroke: Color, scale: number = 1) {
+    const tile = this.#config.sizes.tile
+    const gap = this.#config.sizes.gap
+    const offset = (tile * (1 - scale)) / 2
+
+    if (fill) {
+      this.#ctx.fillStyle = fill
+      this.#ctx.fillRect(
+        x * (tile + gap) + offset,
+        y * (tile + gap) + offset,
+        tile * scale,
+        tile * scale,
+      )
+    }
+
+    if (stroke) {
+      this.#ctx.strokeStyle = stroke
+      this.#ctx.lineWidth = this.#config.sizes.line
+      this.#ctx.strokeRect(
+        x * (tile + gap) + offset,
+        y * (tile + gap) + offset,
+        tile * scale,
+        tile * scale,
+      )
+    }
+  }
+
   #getShapeFn(shape: Shape) {
     if (shape === "circle") {
       return this.#circle.bind(this)
@@ -166,8 +194,6 @@ class GridCanvas {
   }
 
   drawGrid<T extends GridCell>(data: T[][], format?: Format<T>) {
-    console.log(this.#config)
-
     const height = data.length
     const width = data[0].length
 
@@ -211,6 +237,10 @@ class GridCanvas {
   }
 
   drawPoints<T extends Point>(data: T, format?: Format<T>) {}
+
+  clear() {
+    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height)
+  }
 }
 
 export default GridCanvas
