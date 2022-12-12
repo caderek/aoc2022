@@ -26,19 +26,20 @@ const buildGraph = (input: string[][]) => {
     for (let x = 0; x < input[0].length; x++) {
       const neighbors = neighborsWithCoords(x, y, input)
       const currentElevation = getElevation(input[y][x])
+      const nodeName = `${y}:${x}`
 
       if (input[y][x] === "S") {
-        start = `${y}:${x}`
+        start = nodeName
       }
 
       if (input[y][x] === "E") {
-        end = `${y}:${x}`
+        end = nodeName
       }
 
       for (const neighbor of neighbors) {
         const neighborElevation = getElevation(neighbor.val)
         if (neighborElevation <= currentElevation + 1) {
-          g.setEdge(`${y}:${x}`, `${neighbor.y}:${neighbor.x}`)
+          g.setEdge(nodeName, `${neighbor.y}:${neighbor.x}`)
         }
       }
     }
