@@ -7,7 +7,7 @@ const parseInput = (rawInput: string) =>
     .split("\n\n")
     .map((line) => line.split("\n").map((v) => JSON.parse(v)))
 
-const compare = (a: any, b: any): 1 | -1 | 0 => {
+const compare = (a: any, b: any): number => {
   if (a === b) {
     return 0
   }
@@ -21,7 +21,7 @@ const compare = (a: any, b: any): 1 | -1 | 0 => {
   }
 
   if (typeof a === "number" && typeof b === "number") {
-    return a < b ? 1 : a === b ? 0 : -1
+    return b - a
   }
 
   if (typeof a === "number") {
@@ -52,7 +52,7 @@ const part1 = (rawInput: string) => {
   input.forEach(([a, b], index) => {
     const inOrder = compare(a, b)
 
-    if (inOrder === 1 || inOrder === 0) {
+    if (inOrder >= 0) {
       sumOfIndices += index + 1
     }
   })
