@@ -153,9 +153,9 @@ Both parts: 1533.233ms
 
 ```
 Day 13
-Time part 1: 1.918ms
-Time part 2: 12.508ms
-Both parts: 14.426ms
+Time part 1: 2.551ms
+Time part 2: 12.566ms
+Both parts: 15.117ms
 ```
 
 ```
@@ -244,7 +244,7 @@ Both parts: -
 
 ```
 Total stars: 26/50
-Total time: 2832.958ms
+Total time: 2833.649ms
 ```
 
 <!--/RESULTS-->
