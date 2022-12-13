@@ -118,5 +118,4 @@ run({
     ],
     solution: part2,
   },
-  // onlyTests: true,
 })
