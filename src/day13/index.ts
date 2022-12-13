@@ -33,13 +33,13 @@ const compare = (a: any, b: any): number => {
   }
 
   for (const [aa, bb] of zip_.all(b, a)) {
-    const r = compare(aa, bb)
+    const val = compare(aa, bb)
 
-    if (r === 0) {
+    if (val === 0) {
       continue
     }
 
-    return r
+    return val
   }
 
   return 0
@@ -50,9 +50,7 @@ const part1 = (rawInput: string) => {
   let sumOfIndices = 0
 
   input.forEach(([a, b], index) => {
-    const val = compare(a, b)
-
-    if (val <= 0) {
+    if (compare(a, b) <= 0) {
       sumOfIndices += index + 1
     }
   })
