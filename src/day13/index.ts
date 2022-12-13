@@ -13,15 +13,15 @@ const compare = (a: any, b: any): number => {
   }
 
   if (a === undefined) {
-    return 1
-  }
-
-  if (b === undefined) {
     return -1
   }
 
+  if (b === undefined) {
+    return 1
+  }
+
   if (typeof a === "number" && typeof b === "number") {
-    return b - a
+    return a - b
   }
 
   if (typeof a === "number") {
@@ -52,7 +52,7 @@ const part1 = (rawInput: string) => {
   input.forEach(([a, b], index) => {
     const inOrder = compare(a, b)
 
-    if (inOrder >= 0) {
+    if (inOrder <= 0) {
       sumOfIndices += index + 1
     }
   })
@@ -65,7 +65,7 @@ const part2 = (rawInput: string) => {
     .concat([[[[2]], [[6]]]])
     .flat()
 
-  const sorted = input.sort(compare).reverse()
+  const sorted = input.sort(compare)
 
   const a = sorted.findIndex((v) => isDeepStrictEqual(v, [[2]])) + 1
   const b = sorted.findIndex((v) => isDeepStrictEqual(v, [[6]])) + 1
