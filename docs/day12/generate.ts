@@ -1,7 +1,5 @@
-// @ts-ignore
-import createGraph from "https://cdn.skypack.dev/ngraph.graph"
-// @ts-ignore
-import path from "https://cdn.skypack.dev/ngraph.path"
+import createGraph from "ngraph.graph"
+import path from "ngraph.path"
 
 const parseInput = (rawInput: string) =>
   rawInput.split("\n").map((line) => line.split(""))

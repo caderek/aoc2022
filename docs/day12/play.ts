@@ -1,4 +1,4 @@
-import GridCanvas from "../../utils/grid-canvas.js"
+import GridCanvas from "../lib/grid-canvas.js"
 import { part1, part2 } from "./generate.js"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

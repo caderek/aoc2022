@@ -6,6 +6,7 @@
   "scripts": {
     "start": "aocrunner day",
     "build": "aocrunner build",
+    "build:vis": "node scripts/build-visualizations.js",
     "format": "prettier -w src",
     "update:readme": "aocrunner update:readme"
   },
@@ -19,6 +20,7 @@
     "@types/node": "^16.11.6",
     "aocrunner": "^1.9.6",
     "aoctimer": "^3.0.4",
+    "esbuild": "^0.16.5",
     "prettier": "^2.4.1"
   },
   "engines": {

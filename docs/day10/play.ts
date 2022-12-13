@@ -1,4 +1,4 @@
-import GridCanvas from "../../utils/grid-canvas.js"
+import GridCanvas from "../lib/grid-canvas.js"
 import { part2 } from "./generate.js"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -18,7 +18,7 @@ const main = async () => {
     background: "#101",
   })
 
-  let last = []
+  let last: any[] = []
 
   for (const { screen, register, cycle, lit } of screens) {
     canvas.clear()

@@ -12,12 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/**/*.test.ts",
-    "src/**/*.temp.ts"
-  ]
+  "include": ["src", "visualisations/lib/grid-canvas.ts"],
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.temp.ts"]
 }
