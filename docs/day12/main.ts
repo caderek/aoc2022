@@ -1,18 +1,13 @@
 import GridCanvas from "../lib/grid-canvas.js"
+import { readInput } from "../lib/readInput.js"
 import { part1, part2 } from "./generate.js"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const main = async () => {
-  const input = await fetch("/src/day12/input.txt").then((res) => res.text())
+  const input = await readInput()
 
-  //   const input = `Sabqponm
-  // abcryxxl
-  // accszExk
-  // acctuvwj
-  // abdefghi`
-
-  const grid = input.split("\n").map((line) => line.split(""))
+  const grid: string[][] = input.split("\n").map((line) => line.split(""))
 
   const path = part1(input)
   const shortestPath = part2(input)
