@@ -67,10 +67,10 @@ const part2 = (rawInput: string) => {
 
   const sorted = input.sort(compare).reverse()
 
-  const a = sorted.findIndex((v) => isDeepStrictEqual(v, [[2]]))
-  const b = sorted.findIndex((v) => isDeepStrictEqual(v, [[6]]))
+  const a = sorted.findIndex((v) => isDeepStrictEqual(v, [[2]])) + 1
+  const b = sorted.findIndex((v) => isDeepStrictEqual(v, [[6]])) + 1
 
-  return (a + 1) * (b + 1)
+  return a * b
 }
 
 const testInput = `
