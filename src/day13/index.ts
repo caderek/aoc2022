@@ -24,11 +24,11 @@ const compare = (a: any, b: any): 1 | -1 | 0 => {
     return a < b ? 1 : a === b ? 0 : -1
   }
 
-  if (typeof a === "number" && Array.isArray(b)) {
+  if (typeof a === "number") {
     return compare([a], b)
   }
 
-  if (typeof b === "number" && Array.isArray(a)) {
+  if (typeof b === "number") {
     return compare(a, [b])
   }
 
