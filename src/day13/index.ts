@@ -50,9 +50,9 @@ const part1 = (rawInput: string) => {
   let sumOfIndices = 0
 
   input.forEach(([a, b], index) => {
-    const inOrder = compare(a, b)
+    const val = compare(a, b)
 
-    if (inOrder <= 0) {
+    if (val <= 0) {
       sumOfIndices += index + 1
     }
   })
