@@ -1,5 +1,5 @@
-import { zip_ } from "@arrows/array"
 import run from "aocrunner"
+import { zip_ } from "@arrows/array"
 import { isDeepStrictEqual } from "util"
 
 const parseInput = (rawInput: string) =>
@@ -12,12 +12,12 @@ const compare = (a: any, b: any): 1 | -1 | 0 => {
     return 0
   }
 
-  if (a !== undefined && b === undefined) {
-    return -1
+  if (a === undefined) {
+    return 1
   }
 
-  if (a === undefined && b !== undefined) {
-    return 1
+  if (b === undefined) {
+    return -1
   }
 
   if (typeof a === "number" && typeof b === "number") {
