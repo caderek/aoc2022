@@ -102,7 +102,6 @@ const part2 = (rawInput: string) => {
     walls.add(`${x}:${maxY + 2}`)
   }
 
-  const stopCondition = () => false
   const sandUnits = new Set<string>()
 
   while (true) {
