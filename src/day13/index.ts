@@ -1,5 +1,4 @@
 import run from "aocrunner"
-import { zip_ } from "@arrows/array"
 import { isDeepStrictEqual } from "util"
 
 const parseInput = (rawInput: string) =>
@@ -8,37 +7,18 @@ const parseInput = (rawInput: string) =>
     .map((line) => line.split("\n").map((v) => JSON.parse(v)))
 
 const compare = (a: any, b: any): number => {
-  if (a === b) {
-    return 0
-  }
+  if (a === b) return 0
+  if (a === undefined) return -1
+  if (b === undefined) return 1
+  if (typeof a === "number" && typeof b === "number") return a - b
+  if (typeof a === "number") return compare([a], b)
+  if (typeof b === "number") return compare(a, [b])
 
-  if (a === undefined) {
-    return -1
-  }
+  const len = Math.max(a.length, b.length)
 
-  if (b === undefined) {
-    return 1
-  }
-
-  if (typeof a === "number" && typeof b === "number") {
-    return a - b
-  }
-
-  if (typeof a === "number") {
-    return compare([a], b)
-  }
-
-  if (typeof b === "number") {
-    return compare(a, [b])
-  }
-
-  for (const [aa, bb] of zip_.all(b, a)) {
-    const val = compare(aa, bb)
-
-    if (val === 0) {
-      continue
-    }
-
+  for (let i = 0; i < len; i++) {
+    const val = compare(a[i], b[i])
+    if (val === 0) continue
     return val
   }
 
