@@ -25,16 +25,8 @@ const getWalls = (input: number[][][]) => {
 
       maxY = fromY > maxY ? fromY : toY > maxY ? toY : maxY
 
-      if (fromX > toX) {
-        ;[fromX, toX] = [toX, fromX]
-      }
-
-      if (fromY > toY) {
-        ;[fromY, toY] = [toY, fromY]
-      }
-
-      for (let y = fromY; y <= toY; y++) {
-        for (let x = fromX; x <= toX; x++) {
+      for (const y of range_(fromY, toY + (fromY > toY ? -1 : 1))) {
+        for (const x of range_(fromX, toX + (fromX > toX ? -1 : 1))) {
           walls.add(`${x}:${y}`)
         }
       }
