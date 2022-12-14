@@ -46,10 +46,9 @@ const compare = (a: any, b: any): number => {
 }
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput)
   let sumOfIndices = 0
 
-  input.forEach(([a, b], index) => {
+  parseInput(rawInput).forEach(([a, b], index) => {
     if (compare(a, b) <= 0) {
       sumOfIndices += index + 1
     }
@@ -59,11 +58,10 @@ const part1 = (rawInput: string) => {
 }
 
 const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput)
+  const sorted = parseInput(rawInput)
     .concat([[[[2]], [[6]]]])
     .flat()
-
-  const sorted = input.sort(compare)
+    .sort(compare)
 
   const a = sorted.findIndex((v) => isDeepStrictEqual(v, [[2]])) + 1
   const b = sorted.findIndex((v) => isDeepStrictEqual(v, [[6]])) + 1
