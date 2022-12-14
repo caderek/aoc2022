@@ -3,8 +3,6 @@ import run from "aocrunner"
 
 type Point = [number, number]
 
-console.log({ range: range_(1, 1 + 1) })
-
 const START: Point = [500, 0]
 
 const parseInput = (rawInput: string) =>
