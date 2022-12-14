@@ -3,6 +3,8 @@ import run from "aocrunner"
 
 type Point = [number, number]
 
+const START: Point = [500, 0]
+
 const parseInput = (rawInput: string) =>
   rawInput
     .split("\n")
@@ -74,13 +76,12 @@ const simulateSandUnit = (
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const { walls, maxY } = getWalls(input)
-  const startPoint: Point = [500, 0]
 
   const stopCondition = (y: number) => y === maxY
   const sandUnits = new Set<string>()
 
   while (true) {
-    const result = simulateSandUnit(startPoint, walls, sandUnits, stopCondition)
+    const result = simulateSandUnit(START, walls, sandUnits, stopCondition)
 
     if (result === null) {
       break
@@ -96,16 +97,17 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const { walls, maxY } = getWalls(input)
-  const startPoint: Point = [500, 0]
+  const floorY = maxY + 2
+  const minRequiredFloorX = range_(START[0] - floorY - 1, START[0] + floorY + 1)
 
-  for (const x of range_(-1000, 1000)) {
-    walls.add(`${x}:${maxY + 2}`)
+  for (const x of minRequiredFloorX) {
+    walls.add(`${x}:${floorY}`)
   }
 
   const sandUnits = new Set<string>()
 
   while (true) {
-    const [x, y] = simulateSandUnit(startPoint, walls, sandUnits) as Point
+    const [x, y] = simulateSandUnit(START, walls, sandUnits) as Point
     sandUnits.add(`${x}:${y}`)
 
     if (y == 0) {
@@ -140,5 +142,4 @@ run({
     ],
     solution: part2,
   },
-  onlyTests: true,
 })
