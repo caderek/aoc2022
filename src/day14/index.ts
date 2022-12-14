@@ -3,6 +3,8 @@ import run from "aocrunner"
 
 type Point = [number, number]
 
+console.log({ range: range_(1, 1 + 1) })
+
 const START: Point = [500, 0]
 
 const parseInput = (rawInput: string) =>
@@ -18,22 +20,22 @@ const getWalls = (input: number[][][]) => {
 
   for (const wallData of input) {
     for (let i = 0; i < wallData.length - 1; i++) {
-      const [fromX, fromY] = wallData[i]
-      const [toX, toY] = wallData[i + 1]
+      let [fromX, fromY] = wallData[i]
+      let [toX, toY] = wallData[i + 1]
 
       maxY = fromY > maxY ? fromY : toY > maxY ? toY : maxY
 
-      if (fromX === toX) {
-        const one = fromY > toY ? -1 : 1
-        for (const y of range_(fromY, toY + one)) {
-          walls.add(`${fromX}:${y}`)
-        }
+      if (fromX > toX) {
+        ;[fromX, toX] = [toX, fromX]
       }
 
-      if (fromY === toY) {
-        const one = fromX > toX ? -1 : 1
-        for (const x of range_(fromX, toX + one)) {
-          walls.add(`${x}:${fromY}`)
+      if (fromY > toY) {
+        ;[fromY, toY] = [toY, fromY]
+      }
+
+      for (let y = fromY; y <= toY; y++) {
+        for (let x = fromX; x <= toX; x++) {
+          walls.add(`${x}:${y}`)
         }
       }
     }
