@@ -4,7 +4,7 @@
 
 Task description: [link](https://adventofcode.com/2022/day/10)
 
-[VISUALIZATION](https://caderek.github.io/aoc2022/day12/)
+[VISUALIZATION](https://caderek.github.io/aoc2022/day10/)
 
 ## Notes
 
