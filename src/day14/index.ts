@@ -21,7 +21,11 @@ const getWalls = (input: number[][][]) => {
       let [fromX, fromY] = wallData[i]
       let [toX, toY] = wallData[i + 1]
 
-      maxY = fromY > maxY ? fromY : toY > maxY ? toY : maxY
+      const biggerY = Math.max(fromY, toY)
+
+      if (biggerY > maxY) {
+        maxY = biggerY
+      }
 
       for (const y of range_(fromY, toY + (fromY > toY ? -1 : 1))) {
         for (const x of range_(fromX, toX + (fromX > toX ? -1 : 1))) {
