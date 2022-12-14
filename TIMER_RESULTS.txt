@@ -70,17 +70,17 @@
     |                                                    |
     | Day 13                                             |
     | ------                                             |
-    | Time: 14.622ms                  Points: 256        |
-    | Benchmark: 0.301%               Level: ********--  |
+    | Time: 4.741ms                   Points: 1024       |
+    | Benchmark: 0.097%               Level: **********  |
     |                                                    |
     |--- SUMMARY ----------------------------------------|
     |                                                    |
     | Completed: 13 / 25                                 |
     |                                                    |
-    | Total time: 1610.008ms                             |
-    | Benchmark (average): 2.547%                        |
+    | Total time: 1600.127ms                             |
+    | Benchmark (average): 2.531%                        |
     |                                                    |
-    | Total score: 7312                                  |
+    | Total score: 8080                                  |
     | Level (average): ********--                        |
     |                                                    |
     +----------------------------------- git.io/JL9Qu ---+
