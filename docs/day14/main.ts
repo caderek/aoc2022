@@ -78,7 +78,7 @@ const main = async () => {
 
   canvas.drawPoints(walls, () => ({ tileColor: "FireBrick" }))
 
-  canvas.drawPoints([{ x: 500 - 350, y: 0 }], () => ({ tileColor: "teal" }))
+  canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({ tileColor: "teal" }))
 }
 
 main()
