@@ -41,20 +41,16 @@ const simulateSandUnit = (
   let [x, y] = START
 
   while (true) {
-    const down = `${x}:${y + 1}`
-    const left = `${x - 1}:${y + 1}`
-    const right = `${x + 1}:${y + 1}`
-
     if (stopCondition && stopCondition(y)) {
       return null
     }
 
-    if (!blocked.has(down)) {
+    if (!blocked.has(`${x}:${y + 1}`)) {
       y++
-    } else if (!blocked.has(left)) {
+    } else if (!blocked.has(`${x - 1}:${y + 1}`)) {
       x--
       y++
-    } else if (!blocked.has(right)) {
+    } else if (!blocked.has(`${x + 1}:${y + 1}`)) {
       x++
       y++
     } else {
