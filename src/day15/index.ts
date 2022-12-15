@@ -1,5 +1,7 @@
 import run from "aocrunner"
 
+type SensorData = { sensorX: number; sensorY: number; manhattan: number }
+
 const parseInput = (rawInput: string) =>
   rawInput
     .split("\n")
@@ -14,9 +16,7 @@ const mergeRanges = (ranges: [number, number][]) => {
     const [prevFrom, prevTo] = merged.at(-1) as [number, number]
 
     if (nextFrom <= prevTo + 1) {
-      const from = prevFrom
-      const to = Math.max(prevTo, nextTo)
-      merged[merged.length - 1] = [from, to]
+      merged[merged.length - 1] = [prevFrom, Math.max(prevTo, nextTo)]
     } else {
       merged.push([nextFrom, nextTo])
     }
@@ -27,15 +27,15 @@ const mergeRanges = (ranges: [number, number][]) => {
 
 const getRanges = (
   y: number,
-  sensors: number[][],
+  sensors: SensorData[],
   minX: number = -Infinity,
   maxX: number = Infinity,
 ) => {
   const ranges: [number, number][] = []
 
-  for (const [sensorX, sensorY, manhattanDistance] of sensors) {
+  for (const { sensorX, sensorY, manhattan } of sensors) {
     const distanceToSensor = Math.abs(y - sensorY)
-    const offsetX = manhattanDistance - distanceToSensor
+    const offsetX = manhattan - distanceToSensor
     const width = Math.max(offsetX * 2 + 1, 0)
 
     if (width > 0) {
@@ -51,14 +51,19 @@ const getRanges = (
   return mergeRanges(ranges)
 }
 
+const getSensors = (input: number[][]) => {
+  return input.map(([x0, y0, x1, y1]) => ({
+    sensorX: x0,
+    sensorY: y0,
+    manhattan: Math.abs(x1 - x0) + Math.abs(y1 - y0),
+  }))
+}
+
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const targetY = 2000000
 
-  const sensors = input.map(([x0, y0, x1, y1]) => {
-    return [x0, y0, Math.abs(x1 - x0) + Math.abs(y1 - y0)]
-  })
-
+  const sensors = getSensors(input)
   const ranges = getRanges(targetY, sensors)
 
   const beaconsAtTargetY = new Set(
@@ -75,9 +80,8 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const max = 4000000
-  const sensors = input.map(([x0, y0, x1, y1]) => {
-    return [x0, y0, Math.abs(x1 - x0) + Math.abs(y1 - y0)]
-  })
+
+  const sensors = getSensors(input)
 
   for (let y = 0; y <= max; y++) {
     const ranges = getRanges(y, sensors, 0, max)
