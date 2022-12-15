@@ -36,7 +36,7 @@ const getRanges = (
   for (const { sensorX, sensorY, manhattan } of sensors) {
     const distanceToSensor = Math.abs(y - sensorY)
     const offsetX = manhattan - distanceToSensor
-    const width = Math.max(offsetX * 2 + 1, 0)
+    const width = offsetX * 2 + 1
 
     if (width > 0) {
       const from = sensorX - offsetX
