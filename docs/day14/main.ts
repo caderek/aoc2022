@@ -39,6 +39,10 @@ const main = async () => {
     if (skip === 0) {
       canvas.clear()
 
+      canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({
+        tileColor: "teal",
+      }))
+
       canvas.drawPoints([{ x: unitPos[0] - minX, y: unitPos[1] }], () => ({
         tileColor: "SandyBrown",
         tileShape: "circle",
@@ -63,11 +67,7 @@ const main = async () => {
         }
       })
 
-      canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({
-        tileColor: "teal",
-      }))
-
-      speed *= 1.01
+      speed *= 1.002
       await frame()
     }
     skip++
@@ -76,14 +76,19 @@ const main = async () => {
 
   canvas.clear()
 
-  canvas.drawPoints(toCanvasPoints(lastBlocked), () => ({
-    tileColor: "SandyBrown",
-    tileShape: "circle",
-  }))
+  canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({ tileColor: "teal" }))
+
+  canvas.drawPoints(toCanvasPoints(lastBlocked), (_, i) => {
+    const l = 57 + (Math.trunc(i * Math.PI) % 20)
+    const color = `hsl(28deg, 87%, ${l}%)`
+
+    return {
+      tileColor: color,
+      tileShape: "circle",
+    }
+  })
 
   canvas.drawPoints(walls, () => ({ tileColor: "FireBrick" }))
-
-  canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({ tileColor: "teal" }))
 }
 
 main()
