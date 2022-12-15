@@ -37,10 +37,7 @@ const getWalls = (rawInput: string, withFloor: boolean = false) => {
 
   if (withFloor) {
     const floorY = maxY + 2
-    const minRequiredFloorX = range_(
-      START[0] - floorY - 1,
-      START[0] + floorY + 1,
-    )
+    const minRequiredFloorX = range_(START[0] - floorY, START[0] + floorY + 1)
 
     for (const x of minRequiredFloorX) {
       minX = Math.min(x, minX)

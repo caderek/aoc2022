@@ -84,7 +84,7 @@ const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
   const { blocked, maxY } = getWalls(input)
   const floorY = maxY + 2
-  const minRequiredFloorX = range_(START[0] - floorY - 1, START[0] + floorY + 1)
+  const minRequiredFloorX = range_(START[0] - floorY, START[0] + floorY + 1)
 
   for (const x of minRequiredFloorX) {
     blocked.add(`${x}:${floorY}`)
