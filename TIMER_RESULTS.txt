@@ -75,15 +75,15 @@
     |                                                    |
     | Day 14                                             |
     | ------                                             |
-    | Time: 970.668ms                 Points: 8          |
-    | Benchmark: 19.961%              Level: ***-------  |
+    | Time: 769.573ms                 Points: 8          |
+    | Benchmark: 15.826%              Level: ***-------  |
     |                                                    |
     |--- SUMMARY ----------------------------------------|
     |                                                    |
     | Completed: 14 / 25                                 |
     |                                                    |
-    | Total time: 2570.795ms                             |
-    | Benchmark (average): 3.776%                        |
+    | Total time: 2369.7ms                               |
+    | Benchmark (average): 3.481%                        |
     |                                                    |
     | Total score: 8088                                  |
     | Level (average): ********--                        |

@@ -13,7 +13,7 @@ const parseInput = (rawInput: string) =>
     )
 
 const getWalls = (input: number[][][]) => {
-  const blocked = new Set<string>()
+  const walls = new Set<string>()
   let maxY = 0
 
   for (const wallData of input) {
@@ -25,17 +25,18 @@ const getWalls = (input: number[][][]) => {
 
       for (const y of range_(fromY, toY + (fromY > toY ? -1 : 1))) {
         for (const x of range_(fromX, toX + (fromX > toX ? -1 : 1))) {
-          blocked.add(`${x}:${y}`)
+          walls.add(`${x}:${y}`)
         }
       }
     }
   }
 
-  return { blocked, maxY }
+  return { walls, maxY }
 }
 
 const simulateSandUnit = (
-  blocked: Set<String>,
+  walls: Set<String>,
+  sandUnits: Set<string>,
   stopCondition?: (y: number) => boolean,
 ) => {
   let [x, y] = START
@@ -49,12 +50,12 @@ const simulateSandUnit = (
       return null
     }
 
-    if (!blocked.has(down)) {
+    if (!walls.has(down) && !sandUnits.has(down)) {
       y++
-    } else if (!blocked.has(left)) {
+    } else if (!walls.has(left) && !sandUnits.has(left)) {
       x--
       y++
-    } else if (!blocked.has(right)) {
+    } else if (!walls.has(right) && !sandUnits.has(right)) {
       x++
       y++
     } else {
@@ -65,47 +66,47 @@ const simulateSandUnit = (
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  const { blocked, maxY } = getWalls(input)
-  const wallsCount = blocked.size
+  const { walls, maxY } = getWalls(input)
 
   const stopCondition = (y: number) => y === maxY
+  const sandUnits = new Set<string>()
 
   while (true) {
-    const result = simulateSandUnit(blocked, stopCondition)
+    const result = simulateSandUnit(walls, sandUnits, stopCondition)
 
     if (result === null) {
       break
     }
 
     const [x, y] = result
-    blocked.add(`${x}:${y}`)
+    sandUnits.add(`${x}:${y}`)
   }
 
-  return blocked.size - wallsCount
+  return sandUnits.size
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  const { blocked, maxY } = getWalls(input)
+  const { walls, maxY } = getWalls(input)
   const floorY = maxY + 2
   const minRequiredFloorX = range_(START[0] - floorY - 1, START[0] + floorY + 1)
 
   for (const x of minRequiredFloorX) {
-    blocked.add(`${x}:${floorY}`)
+    walls.add(`${x}:${floorY}`)
   }
 
-  const wallsCount = blocked.size
+  const sandUnits = new Set<string>()
 
   while (true) {
-    const [x, y] = simulateSandUnit(blocked) as Point
-    blocked.add(`${x}:${y}`)
+    const [x, y] = simulateSandUnit(walls, sandUnits) as Point
+    sandUnits.add(`${x}:${y}`)
 
     if (y == 0) {
       break
     }
   }
 
-  return blocked.size - wallsCount
+  return sandUnits.size
 }
 
 const testInput = `
