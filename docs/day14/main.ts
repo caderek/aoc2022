@@ -44,10 +44,15 @@ const main = async () => {
         tileShape: "circle",
       }))
 
-      canvas.drawPoints(toCanvasPoints(blocked), () => ({
-        tileColor: "SandyBrown",
-        tileShape: "circle",
-      }))
+      canvas.drawPoints(toCanvasPoints(blocked), (_, i) => {
+        const l = 57 + (Math.trunc(i * Math.PI) % 20)
+        const color = `hsl(28deg, 87%, ${l}%)`
+
+        return {
+          tileColor: color,
+          tileShape: "circle",
+        }
+      })
 
       canvas.drawPoints(walls, (_, i) => {
         const mod = (Math.trunc(i * Math.PI) % 5) + 7
