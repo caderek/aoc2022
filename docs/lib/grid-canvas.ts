@@ -9,6 +9,12 @@ type Config = {
   lineSize: number
   gapSize: number
   background: Color
+  fitViewport: boolean
+  center: boolean
+  cameraX: number
+  cameraY: number
+  cameraWidth: number | null
+  cameraHeight: number | null
 }
 
 type TileStyle = {
@@ -33,12 +39,19 @@ const defaultConfig: Config = {
   lineSize: 0,
   gapSize: 2,
   background: "#0e0614",
+  fitViewport: true,
+  center: true,
+  cameraX: 0,
+  cameraY: 0,
+  cameraWidth: null,
+  cameraHeight: null,
 }
 
 class GridCanvas {
   #canvas: HTMLCanvasElement
   #ctx: CanvasRenderingContext2D
   #config: Config = defaultConfig
+  #offset: number = 0
 
   #resize = () => {
     const pixelRatio = window.devicePixelRatio
@@ -61,6 +74,11 @@ class GridCanvas {
     this.#registerResizeHandler()
 
     this.#canvas.style.background = this.#config.background ?? "transparent"
+  }
+
+  #getOffset() {
+    if (this.#config.cameraWidth && this.#config.cameraHeight) {
+    }
   }
 
   #updateConfig(config: Partial<Config> = {}) {

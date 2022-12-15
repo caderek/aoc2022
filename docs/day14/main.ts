@@ -26,7 +26,7 @@ const main = async () => {
 
   const canvas = new GridCanvas("canvas", {
     gapSize: 0,
-    tileSize: 5,
+    tileSize: 3,
     background: "#090b12",
   })
 
