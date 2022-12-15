@@ -1,5 +1,9 @@
 import { range_ } from "@arrows/array"
 
+type Point = [number, number]
+
+const START: Point = [500, 0]
+
 const parseInput = (rawInput: string) =>
   rawInput
     .split("\n")
@@ -7,45 +11,113 @@ const parseInput = (rawInput: string) =>
       line.split(" -> ").map((item) => item.split(",").map(Number)),
     )
 
-const getWalls = (input: number[][][]) => {
-  const points = new Set<string>()
+const getWalls = (rawInput: string, withFloor: boolean = false) => {
+  const input = parseInput(rawInput)
+  const blocked = new Set<string>()
+  let maxY = 0
+  let minX = Infinity
+  let maxX = 0
 
   for (const wallData of input) {
     for (let i = 0; i < wallData.length - 1; i++) {
-      const [fromX, fromY] = wallData[i]
-      const [toX, toY] = wallData[i + 1]
+      let [fromX, fromY] = wallData[i]
+      let [toX, toY] = wallData[i + 1]
 
-      if (fromX === toX) {
-        const one = fromY > toY ? -1 : 1
-        for (const y of range_(fromY, toY + one)) {
-          points.add(`${fromX}:${y}`)
-        }
-      }
+      maxY = Math.max(fromY, toY, maxY)
+      minX = Math.min(fromX, toX, minX)
+      maxX = Math.max(fromX, toX, maxX)
 
-      if (fromY === toY) {
-        const one = fromX > toX ? -1 : 1
-        for (const x of range_(fromX, toX + one)) {
-          points.add(`${x}:${fromY}`)
+      for (const y of range_(fromY, toY + (fromY > toY ? -1 : 1))) {
+        for (const x of range_(fromX, toX + (fromX > toX ? -1 : 1))) {
+          blocked.add(`${x}:${y}`)
         }
       }
     }
   }
 
-  return points
+  if (withFloor) {
+    const floorY = maxY + 2
+    const minRequiredFloorX = range_(
+      START[0] - floorY - 1,
+      START[0] + floorY + 1,
+    )
+
+    for (const x of minRequiredFloorX) {
+      minX = Math.min(x, minX)
+      maxX = Math.max(x, maxX)
+      blocked.add(`${x}:${floorY}`)
+    }
+  }
+
+  return { blocked, maxY, minX, maxX }
 }
 
-const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput)
-  console.log(input)
-  const walls = getWalls(input)
+const simulateSandUnit = (
+  blocked: Set<String>,
+  stopCondition?: (y: number) => boolean,
+) => {
+  let [x, y] = START
+  const path = [START]
 
-  return walls
+  while (true) {
+    if (stopCondition && stopCondition(y)) {
+      return null
+    }
+
+    if (!blocked.has(`${x}:${y + 1}`)) {
+      y++
+      path.push([x, y])
+    } else if (!blocked.has(`${x - 1}:${y + 1}`)) {
+      x--
+      y++
+      path.push([x, y])
+    } else if (!blocked.has(`${x + 1}:${y + 1}`)) {
+      x++
+      y++
+      path.push([x, y])
+    } else {
+      return path
+    }
+  }
 }
 
-const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput)
+function* part1(rawInput: string) {
+  const { blocked, maxY } = getWalls(rawInput)
 
-  return
+  const stopCondition = (y: number) => y === maxY
+
+  while (true) {
+    const result = simulateSandUnit(blocked, stopCondition)
+
+    if (result === null) {
+      break
+    }
+
+    const [x, y] = result.at(-1) as Point
+    blocked.add(`${x}:${y}`)
+
+    for (const unitPos of result) {
+      yield { unitPos, blocked }
+    }
+  }
 }
 
-export { part1 }
+function* part2(rawInput: string) {
+  const { blocked, maxY } = getWalls(rawInput, true)
+
+  while (true) {
+    const result = simulateSandUnit(blocked)
+    const [x, y] = result?.at(-1) as Point
+    blocked.add(`${x}:${y}`)
+
+    for (const unitPos of result as Point[]) {
+      yield { unitPos, blocked }
+    }
+
+    if (y == 0) {
+      break
+    }
+  }
+}
+
+export { getWalls, part1, part2 }
