@@ -43,7 +43,10 @@ const getWalls = (rawInput: string, withFloor: boolean = false) => {
       minX = Math.min(x, minX)
       maxX = Math.max(x, maxX)
       blocked.add(`${x}:${floorY}`)
+      blocked.add(`${x}:0`)
     }
+
+    blocked.delete(`500:0`)
   }
 
   return { blocked, maxY, minX, maxX }

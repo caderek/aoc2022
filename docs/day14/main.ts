@@ -41,10 +41,6 @@ const main = async () => {
     if (skip === 0) {
       canvas.clear()
 
-      canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({
-        tileColor: "teal",
-      }))
-
       canvas.drawPoints([{ x: unitPos[0] - minX, y: unitPos[1] }], () => ({
         tileColor: "SandyBrown",
         tileShape: "circle",
@@ -77,8 +73,6 @@ const main = async () => {
   }
 
   canvas.clear()
-
-  canvas.drawPoints([{ x: 500 - minX, y: 0 }], () => ({ tileColor: "teal" }))
 
   canvas.drawPoints(toCanvasPoints(lastBlocked), (_, i) => {
     const l = 57 + (Math.trunc(i * Math.PI) % 20)
