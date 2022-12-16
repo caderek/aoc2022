@@ -43,10 +43,15 @@ const main = async () => {
     "#640F14",
   ]
 
+  const cameraHeight = grid.length
+  const cameraWidth = grid[0].length
+
   const canvas = new GridCanvas("canvas", {
     gapSize: 0,
     tileSize: 12,
     background: "#011",
+    cameraHeight,
+    cameraWidth,
   })
 
   for (let i = 0; i < path.length; i++) {

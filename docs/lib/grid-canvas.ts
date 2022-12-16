@@ -11,8 +11,7 @@ type Config = {
   background: Color
   fitViewport: boolean
   center: boolean
-  cameraX: number
-  cameraY: number
+  fit: boolean
   cameraWidth: number | null
   cameraHeight: number | null
 }
@@ -41,8 +40,7 @@ const defaultConfig: Config = {
   background: "#0e0614",
   fitViewport: true,
   center: true,
-  cameraX: 0,
-  cameraY: 0,
+  fit: true,
   cameraWidth: null,
   cameraHeight: null,
 }
@@ -51,7 +49,6 @@ class GridCanvas {
   #canvas: HTMLCanvasElement
   #ctx: CanvasRenderingContext2D
   #config: Config = defaultConfig
-  #offset: number = 0
 
   #resize = () => {
     const pixelRatio = window.devicePixelRatio
@@ -72,13 +69,54 @@ class GridCanvas {
     this.#updateConfig(config)
     this.#resize()
     this.#registerResizeHandler()
+    this.#calculateTileSize()
 
     this.#canvas.style.background = this.#config.background ?? "transparent"
   }
 
-  #getOffset() {
-    if (this.#config.cameraWidth && this.#config.cameraHeight) {
+  #calculateTileSize() {
+    if (
+      this.#config.fit &&
+      this.#config.cameraWidth &&
+      this.#config.cameraHeight
+    ) {
+      const maxTile = Math.min(
+        Math.floor(this.#canvas.width / this.#config.cameraWidth),
+        Math.floor(this.#canvas.height / this.#config.cameraHeight),
+      )
+
+      console.log({ maxTile })
+
+      if (maxTile < this.#config.tileSize) {
+        this.#config.tileSize = maxTile
+      }
     }
+  }
+
+  #getOffset() {
+    if (
+      this.#config.center &&
+      this.#config.cameraWidth &&
+      this.#config.cameraHeight
+    ) {
+      const x = Math.round(
+        (this.#canvas.width -
+          (this.#config.cameraWidth * this.#config.tileSize +
+            (this.#config.cameraWidth - 1) * this.#config.gapSize)) /
+          2,
+      )
+
+      const y = Math.round(
+        (this.#canvas.height -
+          (this.#config.cameraHeight * this.#config.tileSize +
+            (this.#config.cameraHeight - 1) * this.#config.gapSize)) /
+          2,
+      )
+
+      return [x, y]
+    }
+
+    return [0, 0]
   }
 
   #updateConfig(config: Partial<Config> = {}) {
@@ -99,13 +137,14 @@ class GridCanvas {
   ) {
     const tile = this.#config.tileSize
     const gap = this.#config.gapSize
+    const [cameraOffsetX, cameraOffsetY] = this.#getOffset()
     const offset = (tile * (1 - scale)) / 2
 
     if (tileColor) {
       this.#ctx.fillStyle = tileColor
       this.#ctx.fillRect(
-        x * (tile + gap) + offset,
-        y * (tile + gap) + offset,
+        x * (tile + gap) + offset + cameraOffsetX,
+        y * (tile + gap) + offset + cameraOffsetY,
         tile * scale,
         tile * scale,
       )
@@ -115,8 +154,8 @@ class GridCanvas {
       this.#ctx.strokeStyle = lineColor
       this.#ctx.lineWidth = lineSize
       this.#ctx.strokeRect(
-        x * (tile + gap) + offset,
-        y * (tile + gap) + offset,
+        x * (tile + gap) + offset + cameraOffsetX,
+        y * (tile + gap) + offset + cameraOffsetY,
         tile * scale,
         tile * scale,
       )
@@ -134,12 +173,13 @@ class GridCanvas {
     const tile = this.#config.tileSize
     const gap = this.#config.gapSize
     const size = this.#config.tileSize * scale
+    const [cameraOffsetX, cameraOffsetY] = this.#getOffset()
     const offset = (this.#config.tileSize * (1 - scale)) / 2 + size / 2
 
     this.#ctx.beginPath()
     this.#ctx.arc(
-      x * (tile + gap) + offset,
-      y * (tile + gap) + offset,
+      x * (tile + gap) + offset + cameraOffsetX,
+      y * (tile + gap) + offset + cameraOffsetY,
       size / 2,
       0,
       Math.PI * 2,

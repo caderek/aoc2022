@@ -26,8 +26,10 @@ const main = async () => {
 
   const canvas = new GridCanvas("canvas", {
     gapSize: 0,
-    tileSize: 3,
+    tileSize: 5,
     background: "#090b12",
+    cameraHeight: maxY,
+    cameraWidth: maxX - minX,
   })
 
   let skip = 0

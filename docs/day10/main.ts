@@ -11,12 +11,17 @@ const main = async () => {
 
   const t = 200
 
+  const cameraWidth = 40
+  const cameraHeight = 6
+
   const canvas = new GridCanvas("canvas", {
     gapSize: 4,
     tileSize: 24,
     tileColor: "#202",
     tileShape: "circle",
     background: "#101",
+    cameraWidth,
+    cameraHeight,
   })
 
   let last: any[] = []
