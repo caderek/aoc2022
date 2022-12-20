@@ -49,11 +49,14 @@ class GridCanvas {
   #canvas: HTMLCanvasElement
   #ctx: CanvasRenderingContext2D
   #config: Config = defaultConfig
+  #tileSize: number
+  #gapSize: number
 
   #resize = () => {
     const pixelRatio = window.devicePixelRatio
     this.#canvas.width = Math.floor(this.#canvas.clientWidth * pixelRatio)
     this.#canvas.height = Math.floor(this.#canvas.clientHeight * pixelRatio)
+    this.#calculateSizes()
   }
 
   constructor(selector: string, config: Partial<Config> = {}) {
@@ -69,12 +72,11 @@ class GridCanvas {
     this.#updateConfig(config)
     this.#resize()
     this.#registerResizeHandler()
-    this.#calculateTileSize()
 
     this.#canvas.style.background = this.#config.background ?? "transparent"
   }
 
-  #calculateTileSize() {
+  #calculateSizes() {
     if (
       this.#config.fit &&
       this.#config.cameraWidth &&
@@ -85,11 +87,8 @@ class GridCanvas {
         Math.floor(this.#canvas.height / this.#config.cameraHeight),
       )
 
-      console.log({ maxTile })
-
-      if (maxTile < this.#config.tileSize) {
-        this.#config.tileSize = maxTile
-      }
+      this.#tileSize =
+        maxTile < this.#config.tileSize ? maxTile : this.#config.tileSize
     }
   }
 
@@ -101,14 +100,14 @@ class GridCanvas {
     ) {
       const x = Math.round(
         (this.#canvas.width -
-          (this.#config.cameraWidth * this.#config.tileSize +
+          (this.#config.cameraWidth * this.#tileSize +
             (this.#config.cameraWidth - 1) * this.#config.gapSize)) /
           2,
       )
 
       const y = Math.round(
         (this.#canvas.height -
-          (this.#config.cameraHeight * this.#config.tileSize +
+          (this.#config.cameraHeight * this.#tileSize +
             (this.#config.cameraHeight - 1) * this.#config.gapSize)) /
           2,
       )
@@ -135,7 +134,7 @@ class GridCanvas {
     lineSize: number,
     scale: number = 1,
   ) {
-    const tile = this.#config.tileSize
+    const tile = this.#tileSize
     const gap = this.#config.gapSize
     const [cameraOffsetX, cameraOffsetY] = this.#getOffset()
     const offset = (tile * (1 - scale)) / 2
@@ -170,11 +169,11 @@ class GridCanvas {
     lineSize: number,
     scale: number = 1,
   ) {
-    const tile = this.#config.tileSize
+    const tile = this.#tileSize
     const gap = this.#config.gapSize
-    const size = this.#config.tileSize * scale
+    const size = this.#tileSize * scale
     const [cameraOffsetX, cameraOffsetY] = this.#getOffset()
-    const offset = (this.#config.tileSize * (1 - scale)) / 2 + size / 2
+    const offset = (this.#tileSize * (1 - scale)) / 2 + size / 2
 
     this.#ctx.beginPath()
     this.#ctx.arc(

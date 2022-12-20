@@ -1,19 +1,20 @@
 import run from "aocrunner"
 
 type SensorData = { sensorX: number; sensorY: number; manhattan: number }
+type Range = [number, number]
 
 const parseInput = (rawInput: string) =>
   rawInput
     .split("\n")
     .map((line) => line.match(/(-?\d+)/g)?.map(Number)) as number[][]
 
-const mergeRanges = (ranges: [number, number][]) => {
-  const [first, ...rest] = ranges.sort((a, b) => a[0] - b[0])
+const mergeRanges = (ranges: Range[]) => {
+  const sorted = ranges.sort((a, b) => a[0] - b[0])
 
-  const merged = [first]
+  const merged = [sorted.shift() as Range]
 
-  for (const [nextFrom, nextTo] of rest) {
-    const [prevFrom, prevTo] = merged.at(-1) as [number, number]
+  for (const [nextFrom, nextTo] of sorted) {
+    const [prevFrom, prevTo] = merged.at(-1) as Range
 
     if (nextFrom <= prevTo + 1) {
       merged[merged.length - 1] = [prevFrom, Math.max(prevTo, nextTo)]
