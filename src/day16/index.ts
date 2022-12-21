@@ -13,26 +13,6 @@ const parseInput = (rawInput: string): Valve[] =>
     return { name, to, flowRate }
   })
 
-const removeNode = (graph: Graph, node: Node) => {
-  const links: { id: string; len: number }[] = []
-
-  node.links?.forEach((link) => {
-    if (link.fromId !== node.id) {
-      links.push({ id: link.fromId as string, len: link.data.len })
-    }
-  })
-
-  for (const a of links) {
-    for (const b of links) {
-      if (a.id !== b.id && !graph.hasLink(a.id, b.id)) {
-        graph.addLink(a.id, b.id, { len: a.len + b.len })
-      }
-    }
-  }
-
-  graph.removeNode(node.id)
-}
-
 const getIds = (graph: Graph, exclude: string[]) => {
   const ids: string[] = []
 
@@ -44,6 +24,37 @@ const getIds = (graph: Graph, exclude: string[]) => {
   })
 
   return ids
+}
+
+const removeNode = (graph: Graph, node: Node) => {
+  const links: { id: string; len: number }[] = []
+
+  node.links?.forEach((link) => {
+    if (link.fromId !== node.id) {
+      links.push({ id: link.fromId as string, len: link.data.len })
+    }
+  })
+
+  for (const a of links) {
+    for (const b of links) {
+      if (a.id !== b.id) {
+        // console.log(`${a.id}->${b.id}`)
+        const len = a.len + b.len
+        const old = graph.getLink(a.id, b.id)
+
+        if (!old) {
+          graph.addLink(a.id, b.id, { len })
+          continue
+        }
+
+        graph.addLink(a.id, b.id, { len: Math.min(len, old.data.len) })
+      }
+    }
+  }
+
+  // console.log(node.id)
+
+  graph.removeNode(node.id)
 }
 
 const recreateValves = (valves: Valve[]) => {
@@ -104,7 +115,7 @@ const tryCombinations = (
   const targets = ids.filter((id) => id !== "AA")
 
   let maxScore = 0
-  let bestPath = ""
+  let bestPath: string[] = []
 
   let i = 0
 
@@ -128,7 +139,7 @@ const tryCombinations = (
       const newScore = score + graph.getNode(to)?.data.flowRate * newTimeLeft
 
       if (newScore > maxScore) {
-        bestPath = [...prev, to].join("->")
+        bestPath = [...prev, to]
       }
 
       maxScore = Math.max(newScore, maxScore)
@@ -138,9 +149,28 @@ const tryCombinations = (
   }
 
   recur(timeLimit, 0, ["AA"])
-  console.log({ bestPath })
 
-  return maxScore
+  return { maxScore, bestPath }
+}
+
+const checkSolution = (
+  path: string[],
+  score: number,
+  costs: Costs,
+  graph: Graph,
+) => {
+  let realScore = 0
+  let timeRemaining = 30
+  for (let i = 0; i < path.length - 1; i++) {
+    timeRemaining -= costs[path[i]][path[i + 1]]
+    realScore += timeRemaining * graph.getNode(path[i + 1])?.data.flowRate
+  }
+
+  console.log(score, "===", realScore)
+  console.assert(
+    score === realScore,
+    `Score confirmation failed for ${path.join("->")}`,
+  )
 }
 
 const part1 = (rawInput: string) => {
@@ -149,13 +179,15 @@ const part1 = (rawInput: string) => {
   const ids = getIds(graph, ["aa"])
   const costs = calculateCosts(graph, ids)
 
-  // console.log(costs)
-
   let timeLimit = 30
 
   const result = tryCombinations(ids, costs, graph, timeLimit)
 
-  return result
+  checkSolution(result.bestPath, result.maxScore, costs, graph)
+
+  console.log(result.bestPath.join("->"), result.maxScore)
+
+  return result.maxScore
 }
 
 const part2 = (rawInput: string) => {
@@ -175,13 +207,16 @@ Valve HH has flow rate=22; tunnel leads to valve GG
 Valve II has flow rate=0; tunnels lead to valves AA, JJ
 Valve JJ has flow rate=21; tunnel leads to valve II`
 
-// console.time("Time")
-// const result = part1(testInput)
-// console.timeEnd("Time")
-
-// console.log("Score:", result)
-// console.assert(result === 1651, "Part 1 example")
-// Correct: AA->DD->BB->JJ->HH->EE->CC
+const testInputLoop = `
+AA 0 BB GG XX
+BB 0 AA CC
+CC 0 BB DD
+DD 0 CC EE
+EE 5 DD FF XX
+FF 0 EE GG
+GG 0 AA FF 
+XX 0 AA EE
+`
 
 run({
   part1: {
@@ -189,6 +224,10 @@ run({
       {
         input: testInput,
         expected: 1651,
+      },
+      {
+        input: testInputLoop,
+        expected: 27 * 5,
       },
     ],
     solution: part1,
